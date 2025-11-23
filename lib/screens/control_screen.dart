@@ -121,11 +121,14 @@ class _ControlScreenState extends State<ControlScreen>
       appBar: AppBar(
         title: const Text('Clothes Remote'),
         actions: [
-          IconButton(
-            icon: const Icon(LucideIcons.rotateCw),
-            onPressed: () {
-              Provider.of<ClothesProvider>(context, listen: false).updateStatus();
-            },
+          Tooltip(
+            message: 'Refresh status from Arduino or Firebase',
+            child: IconButton(
+              icon: const Icon(LucideIcons.rotateCw),
+              onPressed: () {
+                Provider.of<ClothesProvider>(context, listen: false).updateStatus();
+              },
+            ),
           ),
           const SizedBox(width: 8),
         ],

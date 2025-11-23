@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../models/arduino_state.dart';
 import '../services/arduino_service.dart';
 import '../services/firebase_service.dart';
+import '../services/notification_service.dart';
 
 class ClothesProvider with ChangeNotifier {
   ArduinoState _currentState = ArduinoState(
@@ -103,6 +104,27 @@ class ClothesProvider with ChangeNotifier {
           clothesOutside: false,
           status: 'Moved inside',
         );
+        
+        // Save to Firebase with timestamp
+        await FirebaseService.logClothesMovement(
+          movedInside: true,
+          timestamp: DateTime.now(),
+        );
+        
+        // Send notification
+        await FirebaseService.sendNotification(
+          type: 'clothes_moved_inside',
+          title: 'Clothes Moved Inside 🏠',
+          message: 'Manually moved inside at ${DateTime.now().toString().split('.')[0]}',
+        );
+        
+        // Trigger notification callback for UI display
+        NotificationService.onClothesMovedInside?.call({
+          'type': 'clothes_moved_inside',
+          'title': 'Clothes Moved Inside 🏠',
+          'message': 'Manually moved inside at ${DateTime.now().toString().split('.')[0]}',
+        });
+        
         notifyListeners();
       } else {
         _currentState = _currentState.copyWith(status: 'Failed to move inside');
@@ -148,6 +170,27 @@ class ClothesProvider with ChangeNotifier {
           clothesOutside: true,
           status: 'Moved outside',
         );
+        
+        // Save to Firebase with timestamp
+        await FirebaseService.logClothesMovement(
+          movedInside: false,
+          timestamp: DateTime.now(),
+        );
+        
+        // Send notification
+        await FirebaseService.sendNotification(
+          type: 'clothes_moved_outside',
+          title: 'Clothes Moved Outside ☀️',
+          message: 'Manually moved outside at ${DateTime.now().toString().split('.')[0]}',
+        );
+        
+        // Trigger notification callback for UI display
+        NotificationService.onClothesMovedOutside?.call({
+          'type': 'clothes_moved_outside',
+          'title': 'Clothes Moved Outside ☀️',
+          'message': 'Manually moved outside at ${DateTime.now().toString().split('.')[0]}',
+        });
+        
         notifyListeners();
       } else {
         _currentState = _currentState.copyWith(status: 'Failed to move outside');
@@ -189,12 +232,24 @@ class ClothesProvider with ChangeNotifier {
       }
 
       if (success) {
+        final newAutoMode = !_currentState.autoMode;
         _currentState = _currentState.copyWith(
-          autoMode: !_currentState.autoMode,
-          status: !_currentState.autoMode
+          autoMode: newAutoMode,
+          status: newAutoMode
               ? 'Auto mode enabled'
               : 'Auto mode disabled',
         );
+        
+        // Trigger notification callback for UI display
+        NotificationService.onAutoModeToggled?.call({
+          'type': 'auto_mode_toggled',
+          'enabled': newAutoMode.toString(),
+          'title': newAutoMode ? 'Auto Mode Enabled 🤖' : 'Auto Mode Disabled 🖱️',
+          'message': newAutoMode
+              ? 'Auto rain detection is now active'
+              : 'Manual control only',
+        });
+        
         notifyListeners();
       }
     } catch (e) {
