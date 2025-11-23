@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "553776362728",
+    "firebase_url": "https://clothes-remote-control-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "clothes-remote-control",
+    "storage_bucket": "clothes-remote-control.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553776362728:android:008a6000fc26bd82e5c55d",
+        "android_client_info": {
+          "package_name": "com.example.clothes_remote_control"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEKzg_pWlek4o37ApxU22lJjamevcjEl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
