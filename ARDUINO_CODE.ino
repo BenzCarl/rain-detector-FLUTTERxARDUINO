@@ -1,9 +1,8 @@
 #include <Servo.h>
 
 // Pin definitions - YOUR SETUP
-const int RAIN_SENSOR_PIN = 7;   // Digital Pin 7 (not A0)
-const int SERVO_PIN = 8;         // Digital Pin 8 (not 9)
-const int LED_PIN = 13;          // Built-in LED
+const int RAIN_SENSOR_PIN = 7;   // Digital Pin 7
+const int SERVO_PIN = 8;         // Digital Pin 8
 
 Servo myServo;
 
